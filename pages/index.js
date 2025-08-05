@@ -5,7 +5,7 @@ import Image from "next/image";
 const languages = [
   { code: "KOR", label: "한국어" },
   { code: "ENG", label: "English" },
-/*   { code: "JPN", label: "日本語" },
+/*{ code: "JPN", label: "日本語" },
   { code: "CHN", label: "中文" },
   { code: "VNM", label: "Tiếng Việt" },
   { code: "THA", label: "ไทย" },
@@ -46,7 +46,7 @@ export default function Home() {
       {/* 언어 선택 버튼 */}
         <header className={styles.header}>
           <div className={styles.languageSelector} ref={dropdownRef}>
-              <span className={styles.currentLang}>
+            <span className={styles.currentLang}>
               {languages.find(l => l.code === lang)?.label}
             </span>
             <img
@@ -104,14 +104,14 @@ export default function Home() {
             href="https://m.shinhan.com/mw/fin/pg/FS0100S0000F01?mid=211000100100"
             target="_blank"
             rel="noopener noreferrer"
-             className={styles.bottomButton}
+            className={styles.bottomButton}
           >
             <Image
               src={buttonImage}
               alt="신한은행 통장/체크카드 만들기"
               width={600}
               height={150}
-              className={styles.buttonImg}
+              className={styles.bottomButton}
             />
           </a>
         </div>
