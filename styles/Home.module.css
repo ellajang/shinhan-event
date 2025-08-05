@@ -86,9 +86,9 @@
 .currentLang {
   display: flex;      
   align-items: center;    
-  line-height: 1;   
+  line-height: 2;   
   margin-right: 7px; 
-  font-size: clamp(16px, 2.5vw, 50px);
+  font-size: clamp(15px, 2.5vw, 50px);
   font-weight: 600;
   color: #316aff;
 }
