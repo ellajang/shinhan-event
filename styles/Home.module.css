@@ -46,14 +46,14 @@
   list-style: none;
   z-index: 100;
   width: auto;
-  max-height: 200px;
+  max-height: 250px;
   overflow-y: auto;
 }
 
 .dropdownMenu li {
-  padding: 7px 15px;
+  padding: 8px 15px;
   cursor: pointer;
-  font-size: clamp(7px, 1.5vw, 16px);
+  font-size: clamp(15px, 1.5vw, 45px);
   color: #fff;
 }
 
@@ -63,7 +63,7 @@
 
 /* 전체 스크롤바 */
 .dropdownMenu::-webkit-scrollbar {
-  width: 6px; 
+  width: 8px; 
 }
 
 /* 스크롤바 트랙 (배경) */
@@ -84,10 +84,12 @@
 }
 
 .currentLang {
+  display: flex;
+  align-items: center;
   margin-right: 4px; 
-  padding-bottom: 1px;
-  font-size: clamp(7px, 1.5vw, 16px);
-  font-weight: 600;
+  padding-bottom: 3.5px;
+  font-size: clamp(15px, 2.5vw, 50px);
+  font-weight: 500;
   color: #316aff;
 }
 
@@ -99,27 +101,26 @@
 }
 
 .middleButton {
-  top: 22%; /* 쿠폰 이미지 바로 아래로 위치 비율 조정 */
+  top: 20.5%; /* 쿠폰 이미지 바로 아래로 위치 비율 조정 */
 }
 
 .buttonImg {
-  width: 43vw;        /* 화면 비율로 크기 조절 */
-  max-width: 600px;   /* 최대 크기 제한 */
-  min-width: 120px;   /* 최소 크기 제한 */
+  width: 60vw;  
+  max-width: 1100px; 
+  min-width: 150px; 
   height: auto;
   display: block;
   cursor: pointer;
 }
 
 .buttonWrapper {
-  background-color: #001f56; /* 배경색 */
   text-align: center;
   padding: 10px 0;  /* 버튼 상하 여백 */
 }
 
 .bottomButton {
   display: inline-block; /* 중앙 정렬 */
-  width: 43vw;        /* 화면 비율로 크기 조절 */
-  max-width: 600px;   /* 최대 크기 제한 */
-  min-width: 120px;   /* 최소 크기 제한 */
+  width: 60vw;  
+  max-width: 1100px; 
+  min-width: 150px; 
 }
