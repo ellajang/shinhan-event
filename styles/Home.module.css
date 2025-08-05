@@ -29,13 +29,13 @@
 }
 
 .languageSelector img {
-  width: 6vw;
-  height: 6vw;
+  width: 6.5vw;
+  height: 6.5vw;
 }
 
 .dropdownMenu {
   position: absolute;
-  top: 7vw;
+  top: 7.3vw;
   right: 0px;
   padding: 0px;
   margin: 0;
@@ -46,14 +46,14 @@
   list-style: none;
   z-index: 100;
   width: auto;
-  max-height: 250px;
+  max-height: 200px;
   overflow-y: auto;
 }
 
 .dropdownMenu li {
-  padding: 8px 15px;
+  padding: 13px 30px;
   cursor: pointer;
-  font-size: clamp(15px, 1.5vw, 45px);
+  font-size: clamp(16px, 1.5vw, 45px);
   color: #fff;
 }
 
@@ -84,12 +84,12 @@
 }
 
 .currentLang {
-  display: flex;
-  align-items: center;
-  margin-right: 4px; 
-  padding-bottom: 3.5px;
-  font-size: clamp(15px, 2.5vw, 50px);
-  font-weight: 500;
+  display: flex;      
+  align-items: center;    
+  line-height: 1;   
+  margin-right: 7px; 
+  font-size: clamp(16px, 2.5vw, 50px);
+  font-weight: 600;
   color: #316aff;
 }
 
