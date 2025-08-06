@@ -18,6 +18,30 @@ const languages = [
   { code: "MAL", label: "Bahasa Melayu" }, */
 ];
 
+// 인앱에서 열기
+const openExternalLink = (url) => {
+  try {
+    // 1. 현재 창에서 이동
+    window.location.href = url;
+      setTimeout(() => {
+      const ua = navigator.userAgent.toLowerCase();
+
+      // Android: Chrome 강제 실행 (intent)
+      if (ua.includes("android")) {
+        const intentUrl = `intent://${url.replace(/^https?:\/\//, "")}#Intent;scheme=https;package=com.android.chrome;end`;
+        window.location.href = intentUrl;
+      }
+      // iOS: Universal Link (그냥 HTTPS → 사파리 실행)
+      else if (/iphone|ipad|ipod/.test(ua)) {
+        window.location.href = url; // iOS는 그냥 다시 시도
+      }
+    }, 500);
+  } catch (e) {
+    // 2. 혹시 막히면 fallback
+    window.open(url, "_self");
+  }
+};
+
 export default function Home() {
   const [lang, setLang] = useState("KOR");
   const [isOpen, setIsOpen] = useState(false);
@@ -30,6 +54,7 @@ export default function Home() {
 
   const fullImage = `/images/banner_${lang}.jpg`; // 국가별 배너 이미지
   const buttonImage = `/images/button_${lang}.png`; // 국가별 버튼 이미지
+  const bankLink = "https://m.shinhan.com/mw/fin/pg/FS0100S0000F01?mid=211000100100";
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -45,14 +70,13 @@ export default function Home() {
     <main className={styles.container}>
       {/* 언어 선택 버튼 */}
         <header className={styles.header}>
-          <div className={styles.languageSelector} ref={dropdownRef}>
+          <div className={styles.languageSelector} ref={dropdownRef} onClick={() => setIsOpen(!isOpen)}>
             <span className={styles.currentLang}>
               {languages.find(l => l.code === lang)?.label}
             </span>
             <img
               src="/images/lang-icon.png"
               alt="언어 선택"
-              onClick={() => setIsOpen(!isOpen)}
             />
             {isOpen && (
               <ul className={styles.dropdownMenu}>
@@ -83,37 +107,33 @@ export default function Home() {
         </div>
 
         {/* 쿠폰 아래 버튼 */}
-        <a
-          href="https://m.shinhan.com/mw/fin/pg/FS0100S0000F01?mid=211000100100"
-          target="_blank"
-          rel="noopener noreferrer"
+        <div
+          onClick={() => openExternalLink(bankLink)}
           className={`${styles.buttonImage} ${styles.middleButton}`}
         >
           <Image
             src={buttonImage}
             alt="신한은행 통장/체크카드 만들기"
-            width={600}
+            width={700}
             height={150}
             className={styles.buttonImg}
           />
-        </a>
+        </div>
 
         {/* 배너 하단 버튼 */}
         <div className={styles.buttonWrapper}>
-          <a
-            href="https://m.shinhan.com/mw/fin/pg/FS0100S0000F01?mid=211000100100"
-            target="_blank"
-            rel="noopener noreferrer"
+          <div
+            onClick={() => openExternalLink(bankLink)}
             className={styles.bottomButton}
           >
             <Image
               src={buttonImage}
               alt="신한은행 통장/체크카드 만들기"
-              width={600}
+              width={700}
               height={150}
               className={styles.bottomButton}
             />
-          </a>
+          </div>
         </div>
       </section>
     </main>
