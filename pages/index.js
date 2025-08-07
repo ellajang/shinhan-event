@@ -20,46 +20,30 @@ const languages = [
 
 // 인앱에서 열기
 const openExternalLink = (url) => {
-  const ua = navigator.userAgent.toLowerCase();
+  try {
+    // 1. 현재 창에서 이동
+    window.location.href = url;
+      setTimeout(() => {
+      const ua = navigator.userAgent.toLowerCase();
 
-  // 1. 카카오톡 인앱(외부 브라우저 스킴)
-  if (ua.includes("kakaotalk")) {
-    window.location.href = `kakaotalk://web/openExternal?url=${encodeURIComponent(url)}`;
-    setTimeout(() => {
-      alert("카카오톡에서 외부 브라우저로 이동이 안 되면, 우측 상단 '···' 메뉴에서 '기타 브라우저로 열기'를 이용하세요.");
-    }, 1000);
-    return;
+      // Android: Chrome 강제 실행 (intent)
+      if (ua.includes("android")) {
+        const intentUrl = `intent://${url.replace(/^https?:\/\//, "")}#Intent;scheme=https;package=com.android.chrome;end`;
+        window.location.href = intentUrl;
+      }
+      // iOS: Universal Link (그냥 HTTPS → 사파리 실행)
+      else if (/iphone|ipad|ipod/.test(ua)) {
+        window.location.href = url; // iOS는 그냥 다시 시도
+      }
+    }, 500);
+  } catch (e) {
+    // 2. 혹시 막히면 fallback
+    window.open(url, "_self");
   }
-
-  // 2. 라인 인앱(외부 브라우저 파라미터)
-  if (ua.includes("line")) {
-    window.location.href = url + (url.includes('?') ? '&' : '?') + 'openExternalBrowser=1';
-    return;
-  }
-
-  // 3. 안드로이드 인텐트(크롬 앱)
-  if (ua.includes("android")) {
-    const intentUrl = `intent://${url.replace(/^https?:\/\//, "")}#Intent;scheme=https;package=com.android.chrome;end`;
-    window.location.href = intentUrl;
-    return;
-  }
-
-  // 4. iOS(사파리 시도, 그러나 강제 불가)
-  if (/iphone|ipad|ipod/.test(ua)) {
-    window.open(url, "_blank");
-    setTimeout(() => {
-      alert("iOS 인앱에서는 외부 브라우저(사파리)로 강제 이동이 불가능할 수 있습니다. 직접 복사해서 사파리에서 열어주세요!");
-    }, 800);
-    return;
-  }
-
-  // 5. 기타(PC 등)
-  window.open(url, "_blank");
 };
 
-
 export default function Home() {
-  const [lang, setLang] = useState("KOR");
+  const [lang, setLang] = useState("ENG");
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -80,6 +64,13 @@ export default function Home() {
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+ useEffect(() => {
+    const browserLang = (navigator.language || '').split('-')[0].toLowerCase();
+    let mappedLang = "ENG";
+    if (browserLang === "ko") mappedLang = "KOR";
+    setLang(mappedLang);
   }, []);
 
   return (
