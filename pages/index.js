@@ -5,39 +5,40 @@ import Image from "next/image";
 const languages = [
   { code: "KOR", label: "한국어" },
   { code: "ENG", label: "English" },
-/*{ code: "JPN", label: "日本語" },
-  { code: "CHN", label: "中文" },
-  { code: "VNM", label: "Tiếng Việt" },
-  { code: "THA", label: "ไทย" },
-  { code: "RUS", label: "Русский" },
-  { code: "SPA", label: "Español" },
-  { code: "FRA", label: "Français" },
-  { code: "DEU", label: "Deutsch" },
-  { code: "PHI", label: "Filipino" },
   { code: "IDN", label: "Bahasa Indonesia" },
-  { code: "MAL", label: "Bahasa Melayu" }, */
+  { code: "KAZ", label: "Қазақ тілі" },
+  { code: "BEN", label: "বাংলা" },
+  { code: "KHM", label: "ភាសាខ្មែរ" },
+  { code: "MON", label: "Монгол хэл" },
+  { code: "URD", label: "اردو" },
+  { code: "SIN", label: "සිංහල" },
+  { code: "TAM", label: "தமிழ்" },
+  { code: "THA", label: "ไทย" },
+  { code: "UZB", label: "O'zbek tili" },
+  { code: "VNM", label: "Tiếng Việt" },
 ];
+
+const langMap = {
+  ko: "KOR", en: "ENG",
+  id: "IDN", kk: "KAZ", bn: "BEN", km: "KHM",
+  mn: "MON", ur: "URD", si: "SIN", ta: "TAM",
+  th: "THA", uz: "UZB", vi: "VNM",
+};
 
 // 인앱에서 열기
 const openExternalLink = (url) => {
   try {
-    // 1. 현재 창에서 이동
     window.location.href = url;
-      setTimeout(() => {
+    setTimeout(() => {
       const ua = navigator.userAgent.toLowerCase();
-
-      // Android: Chrome 강제 실행 (intent)
       if (ua.includes("android")) {
         const intentUrl = `intent://${url.replace(/^https?:\/\//, "")}#Intent;scheme=https;package=com.android.chrome;end`;
         window.location.href = intentUrl;
-      }
-      // iOS: Universal Link (그냥 HTTPS → 사파리 실행)
-      else if (/iphone|ipad|ipod/.test(ua)) {
-        window.location.href = url; // iOS는 그냥 다시 시도
+      } else if (/iphone|ipad|ipod/.test(ua)) {
+        window.location.href = url;
       }
     }, 500);
-  } catch (e) {
-    // 2. 혹시 막히면 fallback
+  } catch {
     window.open(url, "_self");
   }
 };
@@ -46,80 +47,90 @@ export default function Home() {
   const [lang, setLang] = useState("ENG");
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const [bannerSrc, setBannerSrc] = useState("/images/banner_ENG.jpg");
+
+  // 1) 언어 자동감지 (한 번만)
+  useEffect(() => {
+    const nav = (navigator.language || "").toLowerCase(); // e.g. "id-ID"
+    const base = nav.split("-")[0];                        // e.g. "id"
+    const mapped = langMap[base] || "ENG";
+    setLang(mapped);
+  }, []);
+
+  useEffect(() => {
+    setBannerSrc(`/images/banner_${lang}.jpg`);
+  }, [lang]);
+  const onBannerError = () => setBannerSrc("/images/banner_ENG.jpg");
+
+  const buttonSrc = lang === "KOR" ? "/images/button_KOR.png" : "/images/button_ENG.png";
+
+  const bankLink = "https://m.shinhan.com/mw/fin/pg/FS0100S0000F01?mid=211000100100";
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) setIsOpen(false);
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleLanguageChange = (selectedLang) => {
     setLang(selectedLang);
     setIsOpen(false);
   };
 
-  const fullImage = `/images/banner_${lang}.jpg`; // 국가별 배너 이미지
-  const buttonImage = `/images/button_${lang}.png`; // 국가별 버튼 이미지
-  const bankLink = "https://m.shinhan.com/mw/fin/pg/FS0100S0000F01?mid=211000100100";
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
- useEffect(() => {
-    const browserLang = (navigator.language || '').split('-')[0].toLowerCase();
-    let mappedLang = "ENG";
-    if (browserLang === "ko") mappedLang = "KOR";
-    setLang(mappedLang);
-  }, []);
-
   return (
     <main className={styles.container}>
-      {/* 언어 선택 버튼 */}
-        <header className={styles.header}>
-          <div className={styles.languageSelector} ref={dropdownRef} onClick={() => setIsOpen(!isOpen)}>
-            <span className={styles.currentLang}>
-              {languages.find(l => l.code === lang)?.label}
-            </span>
-            <img
-              src="/images/lang-icon.png"
-              alt="언어 선택"
-            />
-            {isOpen && (
-              <ul className={styles.dropdownMenu}>
-                {languages.map((langItem) => (
-                  <li
-                    key={langItem.code}
-                    onClick={() => handleLanguageChange(langItem.code)}
-                  >
-                    {langItem.label}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        </header>
+      {/* 언어 선택 */}
+      <header className={styles.header}>
+        <div
+          className={styles.languageSelector}
+          ref={dropdownRef}
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <span className={styles.currentLang}>
+            {languages.find((l) => l.code === lang)?.label ?? "English"}
+          </span>
+          <img src="/images/lang-icon.png" alt="언어 선택" />
+          {isOpen && (
+            <ul className={styles.dropdownMenu}>
+              {languages.map((langItem) => (
+                <li
+                  key={langItem.code}
+                  onClick={(e) => {
+                    e.stopPropagation();             // 토글 충돌 방지
+                    handleLanguageChange(langItem.code);
+                  }}
+                >
+                  {langItem.label}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </header>
 
-      {/* 국가별 메인 이미지 */}
+      {/* 메인 섹션 */}
       <section className={styles.topBanner}>
         <div className={styles.fullImage}>
           <Image
-            src={fullImage}
+            src={bannerSrc}
             alt="메인 이미지"
             width={1080}
             height={1920}
             layout="responsive"
             priority
+            onError={onBannerError}
           />
         </div>
 
-        {/* 쿠폰 아래 버튼 */}
+        {/* 중간 버튼 */}
         <div
           onClick={() => openExternalLink(bankLink)}
           className={`${styles.buttonImage} ${styles.middleButton}`}
         >
           <Image
-            src={buttonImage}
+            src={buttonSrc}
             alt="신한은행 통장/체크카드 만들기"
             width={700}
             height={150}
@@ -127,14 +138,14 @@ export default function Home() {
           />
         </div>
 
-        {/* 배너 하단 버튼 */}
+        {/* 하단 버튼 */}
         <div className={styles.buttonWrapper}>
           <div
             onClick={() => openExternalLink(bankLink)}
             className={styles.bottomButton}
           >
             <Image
-              src={buttonImage}
+              src={buttonSrc}
               alt="신한은행 통장/체크카드 만들기"
               width={700}
               height={150}
