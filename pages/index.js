@@ -12,7 +12,6 @@ const languages = [
   { code: "MON", label: "Монгол хэл" },
   { code: "URD", label: "اردو" },
   { code: "SIN", label: "සිංහල" },
-  { code: "TAM", label: "தமிழ்" },
   { code: "THA", label: "ไทย" },
   { code: "UZB", label: "O'zbek tili" },
   { code: "VNM", label: "Tiếng Việt" },
@@ -48,6 +47,15 @@ export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
   const [bannerSrc, setBannerSrc] = useState("/images/banner_ENG.jpg");
+  const [buttonSrc, setButtonSrc] = useState("/images/button_ENG.png");
+
+useEffect(() => {
+  const btnPath = `/images/button_${lang}.png`;
+  setButtonSrc(btnPath);
+}, [lang]);
+
+const onButtonError = () => setButtonSrc("/images/button_ENG.png");
+
 
   // 1) 언어 자동감지 (한 번만)
   useEffect(() => {
@@ -61,8 +69,6 @@ export default function Home() {
     setBannerSrc(`/images/banner_${lang}.jpg`);
   }, [lang]);
   const onBannerError = () => setBannerSrc("/images/banner_ENG.jpg");
-
-  const buttonSrc = lang === "KOR" ? "/images/button_KOR.png" : "/images/button_ENG.png";
 
   const bankLink = "https://m.shinhan.com/mw/fin/pg/FS0100S0000F01?mid=211000100100";
 
