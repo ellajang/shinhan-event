@@ -13,15 +13,19 @@ const languages = [
   { code: "URD", label: "اردو" },
   { code: "SIN", label: "සිංහල" },
   { code: "THA", label: "ไทย" },
-  { code: "UZB", label: "O'zbek tili" },
-  { code: "VNM", label: "Tiếng Việt" },
+  { code: "UZB", label: "O'zbek tili" }, // 우즈베크어
+  { code: "VNM", label: "Tiếng Việt" }, // 베트남어
+  { code: "CHN", label: "中文" },       // 중국어
+  { code: "RUS", label: "Русский" },   // 러시아어
+  { code: "KGZ", label: "Кыргызча" },  // 키르기스어
 ];
 
 const langMap = {
   ko: "KOR", en: "ENG",
   id: "IDN", kk: "KAZ", bn: "BEN", km: "KHM",
   mn: "MON", ur: "URD", si: "SIN", ta: "TAM",
-  th: "THA", uz: "UZB", vi: "VNM",
+  th: "THA", uz: "UZB", vi: "VNM", cn: "CHN",
+  ru: "RUS", kg: "KGZ"
 };
 
 // 인앱에서 열기
@@ -70,8 +74,8 @@ const onButtonError = () => setButtonSrc("/images/button_ENG.png");
   }, [lang]);
   const onBannerError = () => setBannerSrc("/images/banner_ENG.jpg");
 
-  const bankLink = "https://m.shinhan.com/mw/fin/pg/FS0100S0000F01?mid=211000100100";
-
+  const bankLink = "https://m.shinhan.com/mw/fin/pg/FS0100S0000F01?mid=211000100100&partnerCompany=04";
+  
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) setIsOpen(false);
