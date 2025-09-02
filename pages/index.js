@@ -28,7 +28,7 @@ const langMap = {
   ru: "RUS", kg: "KGZ"
 };
 
-const pngLangs = ["CHN", "ENG", "KHM", "KOR", "LKA", "MON"];
+const pngLangs = ["CHN", "ENG", "KHM", "KOR", "LKA", "MON", "THA", "URD"];
 
 // 인앱에서 열기
 const openExternalLink = (url) => {
