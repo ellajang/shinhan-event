@@ -11,7 +11,7 @@ const languages = [
   { code: "KHM", label: "ភាសាខ្មែរ" },
   { code: "MON", label: "Монгол хэл" },
   { code: "URD", label: "اردو" },
-  { code: "SIN", label: "සිංහල" },
+  { code: "LKA", label: "සිංහල" },
   { code: "THA", label: "ไทย" },
   { code: "UZB", label: "O'zbek tili" }, // 우즈베크어
   { code: "VNM", label: "Tiếng Việt" }, // 베트남어
@@ -23,10 +23,12 @@ const languages = [
 const langMap = {
   ko: "KOR", en: "ENG",
   id: "IDN", kk: "KAZ", bn: "BEN", km: "KHM",
-  mn: "MON", ur: "URD", si: "SIN", ta: "TAM",
+  mn: "MON", ur: "URD", lk: "LKA", ta: "TAM",
   th: "THA", uz: "UZB", vi: "VNM", cn: "CHN",
   ru: "RUS", kg: "KGZ"
 };
+
+const pngLangs = ["CHN", "ENG", "KHM", "KOR", "LKA", "MON"];
 
 // 인앱에서 열기
 const openExternalLink = (url) => {
@@ -50,15 +52,13 @@ export default function Home() {
   const [lang, setLang] = useState("ENG");
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const [bannerSrc, setBannerSrc] = useState("/images/banner_ENG.jpg");
+  const [bannerSrc, setBannerSrc] = useState("/images/banner_ENG.png");
   const [buttonSrc, setButtonSrc] = useState("/images/button_ENG.png");
 
 useEffect(() => {
   const btnPath = `/images/button_${lang}.png`;
   setButtonSrc(btnPath);
 }, [lang]);
-
-const onButtonError = () => setButtonSrc("/images/button_ENG.png");
 
 
   // 1) 언어 자동감지 (한 번만)
@@ -70,9 +70,11 @@ const onButtonError = () => setButtonSrc("/images/button_ENG.png");
   }, []);
 
   useEffect(() => {
-    setBannerSrc(`/images/banner_${lang}.jpg`);
+    const ext = pngLangs.includes(lang) ? "png" : "jpg";
+    setBannerSrc(`/images/banner_${lang}.${ext}`);
   }, [lang]);
-  const onBannerError = () => setBannerSrc("/images/banner_ENG.jpg");
+
+  const onBannerError = () => setBannerSrc("/images/banner_ENG.png");
 
   const bankLink = "https://m.shinhan.com/mw/fin/pg/FS0100S0000F01?mid=211000100100&partnerCompany=04";
   
